@@ -1,12 +1,15 @@
 <template>
 <v-container>
-  <v-row>
-    <v-col>
+  <v-row align="stretch">
+    <v-col sm="6" xs="12">
       <EpisodeList></EpisodeList>
     </v-col>
-    <v-col>
+    <v-col sm="6" xs="12">
       <FileList></FileList>
     </v-col>
+  </v-row>
+  <v-row>
+
   </v-row>
 </v-container>
 </template>
