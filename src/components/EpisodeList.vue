@@ -29,7 +29,7 @@
 
     <v-card-actions>
       <div class="flex-grow-1"></div>
-      <v-btn :disabled="!episodes" text outlined>
+      <v-btn :disabled="episodes.length === 0" text outlined>
         clear
       </v-btn>
     </v-card-actions>
