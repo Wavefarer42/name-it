@@ -10,13 +10,13 @@
              class="mx-1" icon>
         <v-icon>mdi-folder</v-icon>
       </v-btn>
-      <v-chip class="mx-1" color="primary" outlined>{{files.length}}</v-chip>
+      <v-chip class="mx-1" :color="chipColor" outlined>{{files.length}}</v-chip>
     </v-toolbar>
 
     <v-divider></v-divider>
 
     <v-list v-sortable-list @sorted="sortHandler" shaped>
-      <v-list-item v-for="it in files"
+      <v-list-item v-for="(it, i) in files"
                    :key="it.path"
                    class="pr-0">
 
@@ -24,12 +24,12 @@
           <v-icon style="cursor: row-resize" class="sortHandle">mdi-drag-horizontal</v-icon>
         </v-list-item-action>
 
-
         <v-list-item-group v-model="selectedItem" color="primary" style="width: 100%">
           <v-list-item :value="it.path">
             <template v-slot:default="{active, toggle}">
               <v-list-item-content>
-                <v-list-item-title v-text="it.name"></v-list-item-title>
+                <v-list-item-title :class="{'grey--text':ignoredFile(i)}">{{it.name}}</v-list-item-title>
+                <v-list-item-subtitle v-if="ignoredFile(i)" class="grey--text overline">ignored during renaming</v-list-item-subtitle>
                 <v-list-item-subtitle v-if="active" v-text="it.path"
                                       class="d-inline-block text-truncate"
                                       style="max-width: 300px"></v-list-item-subtitle>
@@ -47,7 +47,8 @@
       <v-btn @click="files = []" :disabled="files.length === 0" text outlined>
         clear
       </v-btn>
-      <v-btn :disabled="files.length === 0"
+      <v-btn :disabled="files.length === 0 || episodes.length === 0"
+             color="primary"
              text outlined>
         rename
       </v-btn>
@@ -75,7 +76,19 @@
                 set: function (val) {
                     this.$store.commit("setFiles", val)
                 }
-            }
+            },
+            episodes: function () {
+                return this.$store.state.episodes
+            },
+            chipColor: function () {
+                if (this.files.length === 0) {
+                    return "grey"
+                } else if (this.files.length > 0 && this.episodes.length > 0 && this.files.length !== this.episodes.length) {
+                    return "red"
+                } else {
+                    return "primary"
+                }
+            },
         },
         methods: {
             openFiles: function () {
@@ -107,10 +120,14 @@
                 return function () {
                     this.selectFile = path
                 }
-            }
+            },
+            ignoredFile: function (i) {
+                return i + 1 > this.episodes.length
+            },
         }
     }
 </script>
 
 <style scoped>
+
 </style>

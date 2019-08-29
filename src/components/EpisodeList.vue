@@ -7,8 +7,7 @@
       <v-btn class="mx-1" @click="$store.commit('setSearchRequest', true)" icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
-      <v-chip v-if="episodes" class="mx-1" color="primary" outlined>{{episodes.length}}</v-chip>
-      <v-chip v-else class="mx-1" outlined>0</v-chip>
+      <v-chip class="mx-1" :color="chipColor" outlined>{{episodes.length}}</v-chip>
     </v-toolbar>
     <v-divider></v-divider>
     <v-list shaped>
@@ -51,6 +50,18 @@
                 },
                 set: function (val) {
                     this.$store.commit("setEpisodes", val)
+                }
+            },
+            files: function () {
+                return this.$store.state.files
+            },
+            chipColor: function () {
+                if (this.episodes.length === 0) {
+                    return "grey"
+                } else if (this.files.length > 0 && this.episodes.length > 0 && this.files.length !== this.episodes.length) {
+                    return "red"
+                } else {
+                    return "primary"
                 }
             }
         },
