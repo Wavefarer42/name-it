@@ -16,7 +16,7 @@
               <v-text-field v-model="season" label="Season" hint="2"></v-text-field>
             </v-col>
           </v-row>
-          <v-row justify="end">
+          <v-row>
             <v-col cols="2">
               <v-select v-model="languageSelection"
                         :items="languages"
@@ -63,8 +63,6 @@
         </v-btn>
       </v-card-actions>
     </v-card>
-
-
   </v-dialog>
 
 </template>
@@ -133,14 +131,14 @@
                     return this.$store.state.searchRequest
                 },
                 set: function (value) {
-                    this.$store.commit("finishSearchRequest")
+                    this.$store.commit("setSearchRequest", value)
                 }
             }
         },
         methods: {
             finishRequest: function () {
                 this.$store.commit("selectSeries", this.seriesSelection);
-                this.$store.commit("finishSearchRequest")
+                this.$store.commit("setSearchRequest", false)
             }
         }
     }

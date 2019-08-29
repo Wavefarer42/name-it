@@ -4,7 +4,7 @@
     <v-toolbar flat>
       <v-subheader>Episodes</v-subheader>
       <v-spacer></v-spacer>
-      <v-btn class="mx-1" @click="$store.commit('issueSearchRequest')" icon>
+      <v-btn class="mx-1" @click="$store.commit('setSearchRequest', true)" icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
       <v-chip v-if="episodes" class="mx-1" color="primary" outlined>{{episodes.length}}</v-chip>
@@ -27,7 +27,7 @@
 
     <v-card-actions>
       <div class="flex-grow-1"></div>
-      <v-btn :disabled="episodes.length === 0"
+      <v-btn :disabled="episodes === null || episodes.length === 0"
              @click="clearEpisodes"
              text outlined>
         clear
@@ -41,20 +41,17 @@
         name: "EpisodeList",
         data: function () {
             return {
-                searchRequest: false,
                 selectedItem: 1,
-                episodes: [
-                    {
-                        "name": "some episode",
-                        "episodeNumber": 0,
-                        "date": "2019-2-12",
-                    },
-                    {
-                        "name": "other episode",
-                        "episodeNumber": 1,
-                        "date": "2019-2-12",
-                    }
-                ]
+            }
+        },
+        computed: {
+            episodes: {
+                get: function () {
+                    return this.$store.state.episodes
+                },
+                set: function (val) {
+                    this.$store.commit("setEpisodes", val)
+                }
             }
         },
         methods: {

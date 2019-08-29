@@ -65,23 +65,16 @@
             return {
                 selectedItem: null,
                 selectionInProgress: false,
-                files: [
-                    {
-                        name: "file name",
-                        path: "some/path/file nameasdfffffffffffffffffffffffffffffffffffffasdasdfasssssssssssssssssssssssssssssssss",
-                        extension: "ext."
-                    },
-                    {
-                        name: "foo",
-                        path: "some/path/foo",
-                        extension: "ext."
-                    },
-                    {
-                        name: "bar",
-                        path: "some/path/bar",
-                        extension: "ext."
-                    }
-                ]
+            }
+        },
+        computed: {
+            files: {
+                get: function () {
+                    return this.$store.state.files
+                },
+                set: function (val) {
+                    this.$store.commit("setFiles", val)
+                }
             }
         },
         methods: {
