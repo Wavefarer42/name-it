@@ -77,6 +77,7 @@
         name: "SeriesSelector",
         data: function () {
             return {
+                searchResultLimit: 5,
                 searchResults: [
                     {
                         id: 1,
