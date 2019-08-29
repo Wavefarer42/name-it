@@ -58,7 +58,12 @@
 
       <v-card-actions>
         <div class="flex-grow-1"></div>
-        <v-btn color="primary" @click="finishRequest" text>
+        <v-btn color="primary" @click="cancelRequest" text outlined>
+          Cancel
+        </v-btn>
+        <v-btn color="primary" @click="finishRequest"
+               :disabled="!seriesSelection"
+               text outlined>
           Select
         </v-btn>
       </v-card-actions>
@@ -138,6 +143,9 @@
         methods: {
             finishRequest: function () {
                 this.$store.commit("selectSeries", this.seriesSelection);
+                this.$store.commit("setSearchRequest", false)
+            },
+            cancelRequest: function () {
                 this.$store.commit("setSearchRequest", false)
             }
         }
