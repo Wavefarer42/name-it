@@ -10,8 +10,7 @@
              class="mx-1" icon>
         <v-icon>mdi-folder</v-icon>
       </v-btn>
-      <v-chip v-if="files" class="mx-1" color="primary" outlined>{{files.length}}</v-chip>
-      <v-chip v-else class="mx-1" outlined>0</v-chip>
+      <v-chip class="mx-1" color="primary" outlined>{{files.length}}</v-chip>
     </v-toolbar>
 
     <v-divider></v-divider>
@@ -32,7 +31,8 @@
               <v-list-item-content>
                 <v-list-item-title v-text="it.name"></v-list-item-title>
                 <v-list-item-subtitle v-if="active" v-text="it.path"
-                                      class="d-inline-block text-truncate" style="max-width: 300px"></v-list-item-subtitle>
+                                      class="d-inline-block text-truncate"
+                                      style="max-width: 300px"></v-list-item-subtitle>
                 <v-list-item-subtitle v-if="active">filetype: {{it.extension}}</v-list-item-subtitle>
               </v-list-item-content>
             </template>
@@ -61,7 +61,6 @@
 
     export default {
         name: "FileList",
-        components: {},
         data: function () {
             return {
                 selectedItem: null,
