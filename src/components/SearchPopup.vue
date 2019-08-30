@@ -9,25 +9,21 @@
       <v-form ref="form">
         <v-container>
           <v-row>
-            <v-col cols="8">
-              <v-text-field v-model="seriesTitle" label="Series" hint="Game of Thrones"
+            <v-col cols="11">
+              <v-text-field v-model="seriesTitle"
+                            label="Series"
+                            hint="Game of Thrones"
                             @keyup.enter.native="handleRequest"
+                            required
                             persistent-hint></v-text-field>
             </v-col>
-            <v-col cols="2">
-              <v-text-field v-model="season" label="Season" hint="2"
+            <v-col cols="1">
+              <v-text-field v-model="season"
+                            label="Season"
+                            hint="2"
+                            required
                             @keyup.enter.native="handleRequest"
                             persistent-hint></v-text-field>
-            </v-col>
-            <v-col cols="2">
-              <v-combobox v-model="languageSelection"
-                          :items="languages"
-                          item-text="name"
-                          item-value="code"
-                          label="Select"
-                          persistent-hint
-                          allow-overflow
-                          single-line></v-combobox>
             </v-col>
           </v-row>
           <v-row justify="center">
@@ -94,10 +90,10 @@
 </template>
 
 <script>
-    import TvDbService from "../assets/TvDbService";
+    import EpisodeService from "../assets/EpisodeService";
 
     export default {
-        name: "SeriesSelector",
+        name: "SearchPopup",
         data: function () {
             return {
                 snackbar: false,
@@ -110,13 +106,7 @@
                 searchResults: [],
                 seriesSelection: null,
                 seriesTitle: null,
-                season: null,
-                languageSelection: {"name": "English", "code": "en"},
-                languages: [
-                    {"name": "English", "code": "en"},
-                    {"name": "German", "code": "de"},
-                    {"name": "Japanese", "code": "jp"},
-                ]
+                season: null
             }
         },
         computed: {
@@ -141,7 +131,7 @@
             handleRequest: function () {
                 if (this.seriesTitle && this.season) {
                     this.loadingSearch = true;
-                    TvDbService.search(this.seriesTitle, this.season)
+                    EpisodeService.search(this.seriesTitle, this.season)
                         .then(it => {
                             if (it === null) {
                                 this.snackInfo = "No results found.";
@@ -163,8 +153,8 @@
 
             },
             finishRequest: function () {
-
-                TvDbService.loadSeasonEpisodes(this.seriesSelection.id, this.seriesSelection.season)
+                //TODO move into episode list
+                EpisodeService.loadSeasonEpisodes(this.seriesSelection)
                     .then(it => {
                         this.$store.commit("setEpisodes", it);
                         if (it.length > 10) {

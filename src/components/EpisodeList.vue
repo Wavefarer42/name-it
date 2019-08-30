@@ -1,9 +1,14 @@
 <template>
-  <v-card class="mx-auto" tile>
+  <v-card class="mx-auto scroll" tile>
 
     <v-toolbar flat>
       <v-subheader>Episodes</v-subheader>
       <v-spacer></v-spacer>
+      <v-btn :color="previewColor"
+             @click="preview = !preview"
+             class="mx-1" icon>
+        <v-icon>mdi-set-center-right</v-icon>
+      </v-btn>
       <v-btn class="mx-1" @click="$store.commit('setSearchRequest', true)"
              :loading="$store.state.loadingEpisodes"
              icon>
@@ -31,8 +36,9 @@
           <v-list-item :value="i">
             <template v-slot:default="{active}">
               <v-list-item-content>
-                <v-list-item-title>{{it.episodeNumber}}. {{it.title}}</v-list-item-title>
-                <v-list-item-subtitle v-if="active">aired on {{it.date}}</v-list-item-subtitle>
+                <span v-if="preview">{{formatEpisodeName(it)}}</span>
+                <span v-else>{{it.episodeNumber}}. {{it.episodeTitle}}</span>
+                <span class="grey--text caption" v-if="active">aired on {{it.date}}</span>
               </v-list-item-content>
             </template>
           </v-list-item>
@@ -53,10 +59,13 @@
 </template>
 
 <script>
+    import EpisodeService from "../assets/EpisodeService";
+
     export default {
         name: "EpisodeList",
         data: function () {
             return {
+                preview: false
             }
         },
         computed: {
@@ -87,6 +96,13 @@
                 set: function (val) {
                     this.$store.commit("setSelectedItem", val)
                 }
+            },
+            previewColor: function () {
+                if (this.preview) {
+                    return "primary"
+                } else {
+                    return null
+                }
             }
         },
         methods: {
@@ -96,6 +112,9 @@
             },
             removeElement: function (id) {
                 this.episodes = this.episodes.filter(it => it.id !== id)
+            },
+            formatEpisodeName: function (episode) {
+                return EpisodeService.formatEpisodeName(episode, this.$store.state.nameFormat)
             }
         }
     }

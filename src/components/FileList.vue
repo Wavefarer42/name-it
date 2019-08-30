@@ -4,6 +4,7 @@
     <v-toolbar flat>
       <v-subheader>Files</v-subheader>
       <v-spacer></v-spacer>
+
       <v-btn @click="openFiles"
              :loading="selectionInProgress"
              :disabled="selectionInProgress"
@@ -32,12 +33,10 @@
           <v-list-item :value="i">
             <template v-slot:default="{active}">
               <v-list-item-content>
-                <v-list-item-title :class="{'grey--text':ignoredFile(i)}">{{it.name}}</v-list-item-title>
-                <v-list-item-subtitle v-if="ignoredFile(i)" class="grey--text overline">ignored during renaming
-                </v-list-item-subtitle>
-                <v-list-item-subtitle v-if="active" v-text="it.path"
-                                      class="d-inline-block text-truncate"
-                                      style="max-width: 300px"></v-list-item-subtitle>
+                <span :class="{'grey--text':ignoredFile(i)}">{{it.name}}</span>
+                <span v-if="ignoredFile(i)" class="grey--text overline">ignored during renaming
+                </span>
+                <span v-if="active" class="grey--text caption">{{it.path}}</span>
               </v-list-item-content>
             </template>
           </v-list-item>
@@ -51,7 +50,8 @@
       <v-btn @click="files = []" :disabled="files.length === 0" text outlined>
         clear
       </v-btn>
-      <v-btn :disabled="files.length === 0 || episodes.length === 0"
+      <v-btn :disabled="files.length === 0 || episodes.leflatngth === 0"
+             @click="rename"
              color="primary"
              text outlined>
         rename
@@ -98,18 +98,21 @@
                 set: function (val) {
                     this.$store.commit("setSelectedItem", val)
                 }
-            }
+            },
         },
         methods: {
             openFiles: function () {
                 this.selectionInProgress = true;
                 FileService.loadFiles()
                     .then(it => {
-                        if (it.length > 0){
+                        if (it.length > 0) {
                             this.files = it
                         }
                     })
                     .finally(() => this.selectionInProgress = false)
+            },
+            rename: function () {
+                FileService.renameFiles(this.$store.state.files, this.$store.state.episodes())
             },
             sortHandler: function ({oldIndex, newIndex}) {
                 const moved = this.files.splice(oldIndex, 1)[0];

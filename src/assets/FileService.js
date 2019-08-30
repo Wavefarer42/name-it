@@ -3,6 +3,7 @@ const fs = require("fs");
 const {dialog} = require('electron').remote;
 const path = require('path');
 
+
 export default {
     async loadFiles() {
         const result = await dialog.showOpenDialog({
@@ -19,11 +20,25 @@ export default {
                 const extension = path.extname(it);
                 return {
                     "name": path.basename(it, extension),
-                    "path": it,
-                    "extension": extension
+                    "path": it
                 }
             })
         }
         return files
+    },
+    async renameFiles(files, names) {
+        assert(files.length === names.length);
+
+        let i;
+        for (i = 0; i < files.length; i++) {
+            const oldPath = files[i].path;
+            const basedir = path.dirname(oldPath);
+            const extension = path.extname(oldPath);
+            const newPath = path.join(basedir, `${names[i]}.${extension}`);
+
+            fs.rename(oldPath, path.join(basedir, newPath), function (err) {
+                if (err) throw err;
+            })
+        }
     }
 }

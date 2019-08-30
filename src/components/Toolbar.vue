@@ -6,19 +6,34 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
 
+
     <v-btn class="mx-1" icon>
       <v-icon>mdi-heart</v-icon>
     </v-btn>
-
     <v-btn class="mx-1" icon>
       <v-icon>mdi-coffee</v-icon>
+    </v-btn>
+    <v-btn class="mx-1"
+           @click="$store.commit('setSettings', true)"
+           :color="settings"
+           icon>
+      <v-icon>mdi-settings</v-icon>
     </v-btn>
   </v-app-bar>
 </template>
 
 <script>
     export default {
-        name: "Toolbar"
+        name: "Toolbar",
+        computed: {
+            settings: function () {
+                if (this.$store.state.settings) {
+                    return "primary"
+                } else {
+                    return null
+                }
+            }
+        }
     }
 </script>
 

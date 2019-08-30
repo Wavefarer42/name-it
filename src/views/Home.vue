@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <SeriesSelector></SeriesSelector>
+    <SettingsPopup></SettingsPopup>
     <v-row v-if="series">
       <v-col cols="12">
         <DescriptionPanel :series="series"></DescriptionPanel>
@@ -20,12 +21,13 @@
 <script>
     import EpisodeList from "../components/EpisodeList";
     import FileList from "../components/FileList";
-    import SeriesSelector from "../components/SeriesSelector";
+    import SearchPopup from "../components/SearchPopup";
     import DescriptionPanel from "../components/DescriptionPanel";
+    import SettingsPopup from "../components/SettingsPopup";
 
     export default {
         name: "Home",
-        components: {DescriptionPanel, SeriesSelector, FileList, EpisodeList},
+        components: {SettingsPopup, DescriptionPanel, SeriesSelector: SearchPopup, FileList, EpisodeList},
         computed: {
             series: function () {
                 return this.$store.state.selectedSeries
