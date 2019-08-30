@@ -50,6 +50,13 @@
           </v-col>
         </v-row>
       </v-container>
+
+      <v-card-actions>
+        <div class="flex-grow-1"></div>
+        <v-btn color="primary" @click="$store.commit('setSettings', false)" text outlined>
+          Close
+        </v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>

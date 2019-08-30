@@ -62,6 +62,7 @@
 
 <script>
     import FileService from "../assets/FileService";
+    import EpisodeService from "../assets/EpisodeService";
 
     export default {
         name: "FileList",
@@ -112,7 +113,8 @@
                     .finally(() => this.selectionInProgress = false)
             },
             rename: function () {
-                FileService.renameFiles(this.$store.state.files, this.$store.state.episodes())
+                const names = this.$store.state.episodes.map(it => EpisodeService.formatEpisodeName(it, this.$store.state.nameFormat))
+                FileService.renameFiles(this.$store.state.files, names)
             },
             sortHandler: function ({oldIndex, newIndex}) {
                 const moved = this.files.splice(oldIndex, 1)[0];

@@ -20,7 +20,7 @@ function replaceNumberPattern(string, number, regex, prefix = "") {
 }
 
 export default {
-    async search(title, season) {
+    async search(title, season = null) {
         const series = await TvDbRepository.searchSeries(title);
 
         let result = null;
@@ -30,22 +30,22 @@ export default {
             assert(series.length === seasons.length);
 
             result = [];
-            let i;
-            for (i = 0; i < series.length; i++) {
-                if (seasons[i].indexOf(season.toString()) >= 0) {
-                    result.push({
-                        id: series[i]["id"],
-                        title: series[i]["seriesName"],
-                        airdate: series[i]["firstAired"],
-                        abstract: series[i]["overview"],
-                        season: season,
-                        seasonTotal: seasons[i].length
-                    })
+            for (let seriesIdx = 0; seriesIdx < series.length; seriesIdx++) {
+                for (let seasonIdx = 0; seasonIdx < seasons[seriesIdx].length; seasonIdx++) {
+                    if (season === null || seasons[seriesIdx][seasonIdx] === season) {
+                        result.push({
+                            id: series[seriesIdx]["id"],
+                            title: series[seriesIdx]["seriesName"],
+                            airdate: series[seriesIdx]["firstAired"],
+                            abstract: series[seriesIdx]["overview"],
+                            season: parseInt(seasons[seriesIdx][seasonIdx]),
+                            seasonTotal: seasons[seriesIdx].length
+                        })
+                    }
                 }
             }
         }
-
-        return result
+        return _.sortBy(result, ["season"])
     },
     async loadSeasonEpisodes(series) {
 

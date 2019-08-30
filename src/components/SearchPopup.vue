@@ -29,7 +29,7 @@
           <v-row justify="center">
             <v-col cols="2">
               <v-btn color="primary" width="100%"
-                     :disabled="!seriesTitle || !season"
+                     :disabled="!seriesTitle"
                      :loading="loadingSearch"
                      @click="handleRequest">
                 search
@@ -65,7 +65,7 @@
                 </v-list-item-group>
               </v-list>
               <v-pagination v-if="paginationLength > 1" v-model="page" :length="paginationLength"
-                            total-visible="5"></v-pagination>
+                            total-visible="7"></v-pagination>
             </v-col>
           </v-row>
         </v-container>
@@ -129,28 +129,25 @@
         },
         methods: {
             handleRequest: function () {
-                if (this.seriesTitle && this.season) {
-                    this.loadingSearch = true;
-                    EpisodeService.search(this.seriesTitle, this.season)
-                        .then(it => {
-                            if (it === null) {
-                                this.snackInfo = "No results found.";
-                                this.snackColor = "primary";
-                                this.snackbar = true
-                            } else {
-                                this.searchResults = it
-                            }
-                        })
-                        .catch(it => {
-                            this.snackInfo = "Something went wrong during loadingSearch :/";
-                            this.snackColor = "red";
+                this.loadingSearch = true;
+                EpisodeService.search(this.seriesTitle, this.season)
+                    .then(it => {
+                        if (it === null) {
+                            this.snackInfo = "No results found.";
+                            this.snackColor = "primary";
                             this.snackbar = true
-                        })
-                        .finally(it => {
-                            this.loadingSearch = false
-                        })
-                }
-
+                        } else {
+                            this.searchResults = it
+                        }
+                    })
+                    .catch(it => {
+                        this.snackInfo = "Something went wrong during loadingSearch :/";
+                        this.snackColor = "red";
+                        this.snackbar = true
+                    })
+                    .finally(it => {
+                        this.loadingSearch = false
+                    })
             },
             finishRequest: function () {
                 //TODO move into episode list

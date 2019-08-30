@@ -3,7 +3,7 @@ const fs = require("fs");
 const {dialog} = require('electron').remote;
 const path = require('path');
 
-
+const numberRegex = /\d+/gm;
 export default {
     async loadFiles() {
         const result = await dialog.showOpenDialog({
@@ -24,10 +24,24 @@ export default {
                 }
             })
         }
-        return files
+
+        return this.sortFiles(files)
+    },
+    sortFiles(files) {
+
+        for (let i = 0; i < files.length; i++) {
+            let weight = 0;
+            let match;
+            while ((match = numberRegex.exec(files[i].path)) !== null) {
+                weight += parseInt(match[0])
+            }
+            files[i].weight = weight
+        }
+
+        return _.sortBy(files, ["weight"])
     },
     async renameFiles(files, names) {
-        assert(files.length === names.length);
+        assert(files.length <= names.length);
 
         let i;
         for (i = 0; i < files.length; i++) {
