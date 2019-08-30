@@ -61,8 +61,7 @@
 </template>
 
 <script>
-    const {dialog} = require('electron').remote;
-    const path = require('path');
+    import FileService from "../assets/FileService";
 
     export default {
         name: "FileList",
@@ -104,24 +103,13 @@
         methods: {
             openFiles: function () {
                 this.selectionInProgress = true;
-                dialog.showOpenDialog({
-                    properties: ["openFile", "multiSelections"],
-                    filters: [
-                        {name: "Video", extensions: ["mkv", "avi", "mp4", "mpg", "mpeg"]},
-                        {name: "All Files", extensions: ["*"]}
-                    ]
-                }).then(result => {
-                    if (result.filePaths.length > 0) {
-                        this.files = result.filePaths.map(it => {
-                            const extension = path.extname(it);
-                            return {
-                                "name": path.basename(it, extension),
-                                "path": it,
-                                "extension": extension
-                            }
-                        })
-                    }
-                }).finally(() => this.selectionInProgress = false)
+                FileService.loadFiles()
+                    .then(it => {
+                        if (it.length > 0){
+                            this.files = it
+                        }
+                    })
+                    .finally(() => this.selectionInProgress = false)
             },
             sortHandler: function ({oldIndex, newIndex}) {
                 const moved = this.files.splice(oldIndex, 1)[0];
