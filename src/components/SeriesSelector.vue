@@ -9,47 +9,52 @@
       <v-form ref="form">
         <v-container>
           <v-row>
-            <v-col cols="10">
-              <v-text-field v-model="seriesTitle" label="Series" hint="Games of Thrones"></v-text-field>
+            <v-col cols="8">
+              <v-text-field v-model="seriesTitle" label="Series" hint="Games of Thrones" persistent-hint></v-text-field>
             </v-col>
             <v-col cols="2">
-              <v-text-field v-model="season" label="Season" hint="2"></v-text-field>
+              <v-text-field v-model="season" label="Season" hint="2" persistent-hint></v-text-field>
             </v-col>
-          </v-row>
-          <v-row>
             <v-col cols="2">
-              <v-select v-model="languageSelection"
-                        :items="languages"
-                        item-text="name"
-                        item-value="code"
-                        label="Select"
-                        persistent-hint
-                        single-line></v-select>
+              <v-combobox v-model="languageSelection"
+                          :items="languages"
+                          item-text="name"
+                          item-value="code"
+                          label="Select"
+                          persistent-hint
+                          allow-overflow
+                          single-line></v-combobox>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col cols="12">
-              <v-subheader>Search Results</v-subheader>
+          <v-row justify="center">
+            <v-col cols="2">
+              <v-btn color="primary" width="100%"
+                     :disabled="!seriesTitle || !season"
+                     @click="handleRequest">
+                search
+              </v-btn>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12">
               <v-list>
                 <v-list-item-group v-model="seriesSelection" color="primary">
-                  <template v-for="it in searchResults">
+                  <template v-for="it in paginatedSearchResults">
                     <v-list-item :value="it">
                       <v-list-item-content>
                         <v-list-item-title>{{it.title}}</v-list-item-title>
-                        <v-list-item-subtitle v-if="it.abstract">{{it.abstract}}</v-list-item-subtitle>
-                        <v-list-item-subtitle v-if="it.airdate || it.status">
-                          {{it.airdate}}<span v-if="it.airdate && it.status">,</span> {{it.status}}
+                        <v-list-item-subtitle>
+                          Season {{season}}<span v-if="it.airdate">, {{it.airdate}}</span><span v-if="it.status">, {{it.status}}</span>
                         </v-list-item-subtitle>
+                        <span v-if="it.abstract" class="caption">{{it.abstract}}</span>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider></v-divider>
                   </template>
                 </v-list-item-group>
               </v-list>
+              <v-pagination v-if="paginationLength > 1" v-model="page" :length="paginationLength"
+                            total-visible="5"></v-pagination>
             </v-col>
           </v-row>
         </v-container>
@@ -73,56 +78,18 @@
 </template>
 
 <script>
+    import TvDbService from "../assets/TvDbService";
+
     export default {
         name: "SeriesSelector",
         data: function () {
             return {
-                searchResultLimit: 5,
-                searchResults: [
-                    {
-                        id: 1,
-                        title: "naruto",
-                        airdate: "2019-20-13",
-                        abstract: "For three line lists, the subtitle will clamp vertically at 2 lines and then ellipsis. This feature uses line-clamp and is not supported in all browsers. For three line lists, the subtitle will clamp vertically at 2 lines and then ellipsis. This feature uses line-clamp and is not supported in all browsers. For three line lists, the subtitle will clamp vertically at 2 lines and then ellipsis. This feature uses line-clamp and is not supported in all browsers.",
-                        season: 1,
-                        status: "finished"
-                    },
-                    {
-                        id: 2,
-                        title: "boruto",
-                        airdate: "2019-20-13",
-                        abstract: "awesome dudes son",
-                        season: 1,
-                        status: "running"
-                    },
-                    {
-                        id: 3,
-                        title: "kaneki",
-                        airdate: "2019-20-13",
-                        abstract: "awesome dude",
-                        season: 1,
-                        status: "finished"
-                    },
-                    {
-                        id: 4,
-                        title: "kaneki",
-                        airdate: "2019-20-13",
-                        abstract: "awesome dude",
-                        season: 1,
-                        status: "finished"
-                    },
-                    {
-                        id: 5,
-                        title: "kaneki",
-                        airdate: "2019-20-13",
-                        abstract: "awesome dude",
-                        season: 1,
-                        status: "finished"
-                    }
-                ],
+                page: 1,
+                pageLimit: 5,
+                searchResults: [],
                 seriesSelection: null,
-                seriesTitle: null,
-                season: null,
+                seriesTitle: "naruto",
+                season: 2,
                 languageSelection: {"name": "English", "code": "en"},
                 languages: [
                     {"name": "English", "code": "en"},
@@ -139,9 +106,20 @@
                 set: function (value) {
                     this.$store.commit("setSearchRequest", value)
                 }
+            },
+            paginationLength: function () {
+                return Math.ceil(this.searchResults.length / this.pageLimit)
+            },
+            paginatedSearchResults: function () {
+                const start = (this.page - 1) * this.pageLimit;
+                const end = start + this.pageLimit;
+                return this.searchResults.slice(start, end)
             }
         },
         methods: {
+            handleRequest: function () {
+                TvDbService.search(this.seriesTitle, this.season).then(it => this.searchResults = it)
+            },
             finishRequest: function () {
                 this.$store.commit("selectSeries", this.seriesSelection);
                 this.$store.commit("setSearchRequest", false)

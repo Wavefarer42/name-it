@@ -5,14 +5,17 @@
     </v-card-title>
     <v-card-text>
       <v-row>
-        <v-col cols="4">
+        <v-col>
           <span class="overline mr-1">aired on</span> {{series.airdate}}
         </v-col>
-        <v-col cols="4">
+        <v-col v-if="series.status">
           <span class="overline mr-1">status</span> {{series.status}}
         </v-col>
-        <v-col cols="4">
-          <span class="overline mr-1">seasons</span> {{series.season}}
+        <v-col>
+          <span class="overline mr-1">season</span> {{series.season}}
+        </v-col>
+        <v-col>
+          <span class="overline mr-1">seasons</span> {{series.seasonTotal}}
         </v-col>
       </v-row>
     </v-card-text>

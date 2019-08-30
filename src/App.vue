@@ -17,8 +17,5 @@
             Home,
             Toolbar,
         },
-        data: () => ({
-            //
-        }),
     };
 </script>

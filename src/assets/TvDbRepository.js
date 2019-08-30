@@ -1,33 +1,31 @@
 import axios from "axios";
 
 const apiKey = "X1FKWAES9KRDW27T";
-const ax = axios.create({
-    baseURL: "https://api.thetvdb.com",
-    timeout: 1000
-});
+axios.defaults.baseURL = "http://localhost:57412/https://api.thetvdb.com";
 let obtainedToken = null;
+
 export default {
     async login() {
         const payload = {"apikey": apiKey};
 
-        try {
-            const response = await ax.post("/login", payload);
-            console.log(response);
-            obtainedToken = true;
-            ax.defaults.common["Authorization"] = "Bearer " + response.data["token"]
-        } catch (e) {
-            console.error(e);
-            throw e
+        if (obtainedToken === null) {
+            try {
+                const response = await axios.post("/login", payload);
+                obtainedToken = response.data["token"];
+                axios.defaults.headers.get["Authorization"] = "Bearer " + obtainedToken
+            } catch (e) {
+                console.error(e);
+                throw e
+            }
         }
     },
     async searchSeries(title) {
+        await this.login();
 
         const params = {name: title};
 
         try {
-            const response = await ax.get("/search/series", {params: params});
-            console.log(response);
-
+            const response = await axios.get("/search/series", {params: params});
             return response.data["data"]
         } catch (e) {
             console.error(e);
@@ -35,11 +33,10 @@ export default {
         }
     },
     async loadSeriesSeasons(seriesId) {
+        await this.login();
 
         try {
-            const response = await ax.get(`/series/${seriesId}/episodes/summary`);
-            console.log(response);
-
+            const response = await axios.get(`/series/${seriesId}/episodes/summary`);
             return response.data["data"]["airedSeasons"]
         } catch (e) {
             console.error(e);
@@ -47,13 +44,12 @@ export default {
         }
     },
     async loadSeasonEpisodes(seriesId, season) {
+        await this.login();
 
         const params = {airedSeason: season};
 
         try {
-            const response = await ax.get(`/series/${seriesId}/episodes/query`, {params: params});
-            console.log(response);
-
+            const response = await axios.get(`/series/${seriesId}/episodes/query`, {params: params});
             return response.data["data"]
         } catch (e) {
             console.error(e);

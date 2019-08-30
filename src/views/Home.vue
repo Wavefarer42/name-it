@@ -26,11 +26,11 @@
     export default {
         name: "Home",
         components: {DescriptionPanel, SeriesSelector, FileList, EpisodeList},
-        computed:{
-            series:function(){
+        computed: {
+            series: function () {
                 return this.$store.state.selectedSeries
             }
-        }
+        },
     }
 </script>
 
