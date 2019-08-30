@@ -28,8 +28,12 @@ export default {
             const response = await axios.get("/search/series", {params: params});
             return response.data["data"]
         } catch (e) {
-            console.error(e);
-            throw e
+            if (e.response.status === 404) {
+                return []
+            } else {
+                console.error(e);
+                throw e
+            }
         }
     },
     async loadSeriesSeasons(seriesId) {
@@ -39,8 +43,12 @@ export default {
             const response = await axios.get(`/series/${seriesId}/episodes/summary`);
             return response.data["data"]["airedSeasons"]
         } catch (e) {
-            console.error(e);
-            throw e
+            if (e.response.status === 404) {
+                return []
+            } else {
+                console.error(e);
+                throw e
+            }
         }
     },
     async loadSeasonEpisodes(seriesId, season) {

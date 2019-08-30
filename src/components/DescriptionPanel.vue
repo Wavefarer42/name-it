@@ -28,8 +28,7 @@
 <script>
     export default {
         name: "DescriptionPanel",
-        props: ["series"],
-
+        props: ["series"]
     }
 </script>
 

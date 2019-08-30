@@ -10,10 +10,14 @@
         <v-container>
           <v-row>
             <v-col cols="8">
-              <v-text-field v-model="seriesTitle" label="Series" hint="Games of Thrones" persistent-hint></v-text-field>
+              <v-text-field v-model="seriesTitle" label="Series" hint="Game of Thrones"
+                            @keyup.enter.native="handleRequest"
+                            persistent-hint></v-text-field>
             </v-col>
             <v-col cols="2">
-              <v-text-field v-model="season" label="Season" hint="2" persistent-hint></v-text-field>
+              <v-text-field v-model="season" label="Season" hint="2"
+                            @keyup.enter.native="handleRequest"
+                            persistent-hint></v-text-field>
             </v-col>
             <v-col cols="2">
               <v-combobox v-model="languageSelection"
@@ -30,11 +34,22 @@
             <v-col cols="2">
               <v-btn color="primary" width="100%"
                      :disabled="!seriesTitle || !season"
+                     :loading="loading"
                      @click="handleRequest">
                 search
               </v-btn>
             </v-col>
           </v-row>
+          <v-snackbar v-model="snackbar"
+                      :color="snackColor"
+                      text>
+            {{snackInfo}}
+            <v-btn color="blue"
+                   text
+                   @click="snackbar = false">
+              Close
+            </v-btn>
+          </v-snackbar>
           <v-row>
             <v-col cols="12">
               <v-list>
@@ -44,7 +59,7 @@
                       <v-list-item-content>
                         <v-list-item-title>{{it.title}}</v-list-item-title>
                         <v-list-item-subtitle>
-                          Season {{season}}<span v-if="it.airdate">, {{it.airdate}}</span><span v-if="it.status">, {{it.status}}</span>
+                          Season {{it.season}}<span v-if="it.airdate">, {{it.airdate}}</span><span v-if="it.status">, {{it.status}}</span>
                         </v-list-item-subtitle>
                         <span v-if="it.abstract" class="caption">{{it.abstract}}</span>
                       </v-list-item-content>
@@ -84,12 +99,16 @@
         name: "SeriesSelector",
         data: function () {
             return {
+                snackbar: false,
+                snackColor: "primary",
+                snackInfo: null,
+                loading: false,
                 page: 1,
                 pageLimit: 5,
                 searchResults: [],
                 seriesSelection: null,
-                seriesTitle: "naruto",
-                season: 2,
+                seriesTitle: null,
+                season: null,
                 languageSelection: {"name": "English", "code": "en"},
                 languages: [
                     {"name": "English", "code": "en"},
@@ -118,7 +137,28 @@
         },
         methods: {
             handleRequest: function () {
-                TvDbService.search(this.seriesTitle, this.season).then(it => this.searchResults = it)
+                if (this.seriesTitle && this.season) {
+                    this.loading = true;
+                    TvDbService.search(this.seriesTitle, this.season)
+                        .then(it => {
+                            if (it === null) {
+                                this.snackInfo = "No results found.";
+                                this.snackColor = "primary";
+                                this.snackbar = true
+                            } else {
+                                this.searchResults = it
+                            }
+                        })
+                        .catch(it => {
+                            this.snackInfo = "Something went wrong during loading :/";
+                            this.snackColor = "red";
+                            this.snackbar = true
+                        })
+                        .finally(it => {
+                            this.loading = false
+                        })
+                }
+
             },
             finishRequest: function () {
                 this.$store.commit("selectSeries", this.seriesSelection);
