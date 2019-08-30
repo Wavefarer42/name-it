@@ -29,5 +29,18 @@ export default {
         }
 
         return result
+    },
+    async loadSeasonEpisodes(seriesId, season) {
+
+        const episodes = await TvDbRepository.loadSeasonEpisodes(seriesId, season);
+
+        return episodes.map(it => {
+            return {
+                id: it["id"],
+                title: it["episodeName"],
+                episodeNumber: parseInt(it["airedEpisodeNumber"]),
+                date: it["firstAired"]
+            }
+        }).sort((a, b) => a.episodeNumber - b.episodeNumber)
     }
 }

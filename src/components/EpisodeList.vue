@@ -4,7 +4,9 @@
     <v-toolbar flat>
       <v-subheader>Episodes</v-subheader>
       <v-spacer></v-spacer>
-      <v-btn class="mx-1" @click="$store.commit('setSearchRequest', true)" icon>
+      <v-btn class="mx-1" @click="$store.commit('setSearchRequest', true)"
+             :loading="$store.state.loadingEpisodes"
+             icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
       <v-chip class="mx-1" :color="chipColor" outlined>{{episodes.length}}</v-chip>
@@ -12,8 +14,8 @@
 
     <v-divider></v-divider>
 
-    <v-list shaped>
-      <v-list-item v-for="it in episodes"
+    <v-list shaped :dense="$store.state.denseLists">
+      <v-list-item v-for="(it, i) in episodes"
                    :key="it.id"
                    class="pr-0 my-1">
 
@@ -26,11 +28,10 @@
         <v-divider vertical></v-divider>
 
         <v-list-item-group v-model="selectedItem" color="primary" style="width: 100%">
-          <v-list-item :value="it.id">
+          <v-list-item :value="i">
             <template v-slot:default="{active}">
               <v-list-item-content>
-                <v-list-item-title>{{it.name}}</v-list-item-title>
-                <v-list-item-subtitle v-if="active">episode #{{it.episodeNumber}}</v-list-item-subtitle>
+                <v-list-item-title>{{it.episodeNumber}}. {{it.title}}</v-list-item-title>
                 <v-list-item-subtitle v-if="active">aired on {{it.date}}</v-list-item-subtitle>
               </v-list-item-content>
             </template>
@@ -56,7 +57,6 @@
         name: "EpisodeList",
         data: function () {
             return {
-                selectedItem: 1,
             }
         },
         computed: {
@@ -78,6 +78,14 @@
                     return "red"
                 } else {
                     return "primary"
+                }
+            },
+            selectedItem: {
+                get: function () {
+                    return this.$store.state.selectedItem
+                },
+                set: function (val) {
+                    this.$store.commit("setSelectedItem", val)
                 }
             }
         },

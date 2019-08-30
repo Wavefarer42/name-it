@@ -34,7 +34,7 @@
             <v-col cols="2">
               <v-btn color="primary" width="100%"
                      :disabled="!seriesTitle || !season"
-                     :loading="loading"
+                     :loading="loadingSearch"
                      @click="handleRequest">
                 search
               </v-btn>
@@ -83,6 +83,7 @@
         </v-btn>
         <v-btn color="primary" @click="finishRequest"
                :disabled="!seriesSelection"
+               :loading="loadingEpisodes"
                text outlined>
           Select
         </v-btn>
@@ -102,7 +103,8 @@
                 snackbar: false,
                 snackColor: "primary",
                 snackInfo: null,
-                loading: false,
+                loadingSearch: false,
+                loadingEpisodes: false,
                 page: 1,
                 pageLimit: 5,
                 searchResults: [],
@@ -138,7 +140,7 @@
         methods: {
             handleRequest: function () {
                 if (this.seriesTitle && this.season) {
-                    this.loading = true;
+                    this.loadingSearch = true;
                     TvDbService.search(this.seriesTitle, this.season)
                         .then(it => {
                             if (it === null) {
@@ -150,17 +152,30 @@
                             }
                         })
                         .catch(it => {
-                            this.snackInfo = "Something went wrong during loading :/";
+                            this.snackInfo = "Something went wrong during loadingSearch :/";
                             this.snackColor = "red";
                             this.snackbar = true
                         })
                         .finally(it => {
-                            this.loading = false
+                            this.loadingSearch = false
                         })
                 }
 
             },
             finishRequest: function () {
+
+                TvDbService.loadSeasonEpisodes(this.seriesSelection.id, this.seriesSelection.season)
+                    .then(it => {
+                        this.$store.commit("setEpisodes", it);
+                        if (it.length > 10) {
+                            this.$store.commit("setDenseLists", true)
+                        }
+                    })
+                    .finally(it => {
+                        this.$store.commit("setLoadingEpisode", false)
+                    });
+
+                this.$store.commit("setLoadingEpisode", true);
                 this.$store.commit("selectSeries", this.seriesSelection);
                 this.$store.commit("setSearchRequest", false)
             },

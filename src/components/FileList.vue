@@ -15,19 +15,21 @@
 
     <v-divider></v-divider>
 
-    <v-list v-sortable-list @sorted="sortHandler" shaped>
+    <v-list v-sortable-list @sorted="sortHandler"
+            :dense="$store.state.denseLists"
+            shaped>
       <v-list-item v-for="(it, i) in files"
                    :key="it.path"
                    class="pr-0 my-1">
 
-        <v-list-item-action class="mr-2">
+        <v-list-item-action class="mr-2 my-0">
           <v-icon style="cursor: row-resize" class="sortHandle">mdi-drag-horizontal</v-icon>
         </v-list-item-action>
 
         <v-divider vertical></v-divider>
 
         <v-list-item-group v-model="selectedItem" color="primary" style="width: 100%">
-          <v-list-item :value="it.path">
+          <v-list-item :value="i">
             <template v-slot:default="{active}">
               <v-list-item-content>
                 <v-list-item-title :class="{'grey--text':ignoredFile(i)}">{{it.name}}</v-list-item-title>
@@ -36,7 +38,6 @@
                 <v-list-item-subtitle v-if="active" v-text="it.path"
                                       class="d-inline-block text-truncate"
                                       style="max-width: 300px"></v-list-item-subtitle>
-                <v-list-item-subtitle v-if="active">filetype: {{it.extension}}</v-list-item-subtitle>
               </v-list-item-content>
             </template>
           </v-list-item>
@@ -67,7 +68,6 @@
         name: "FileList",
         data: function () {
             return {
-                selectedItem: null,
                 selectionInProgress: false,
             }
         },
@@ -92,6 +92,14 @@
                     return "primary"
                 }
             },
+            selectedItem: {
+                get: function () {
+                    return this.$store.state.selectedItem
+                },
+                set: function (val) {
+                    this.$store.commit("setSelectedItem", val)
+                }
+            }
         },
         methods: {
             openFiles: function () {
