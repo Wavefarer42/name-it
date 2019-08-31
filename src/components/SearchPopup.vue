@@ -14,7 +14,9 @@
                             label="Series"
                             hint="Game of Thrones"
                             @keyup.enter.native="handleRequest"
+                            autofocus
                             required
+                            ref="seriesField"
                             persistent-hint></v-text-field>
             </v-col>
             <v-col cols="1">
@@ -168,6 +170,13 @@
             },
             cancelRequest: function () {
                 this.$store.commit("setSearchRequest", false)
+            }
+        },
+        watch:{
+            searchRequest:function(val){
+                if (val){
+                    this.$nextTick(this.$refs.seriesField.focus);
+                }
             }
         }
     }

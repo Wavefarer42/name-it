@@ -28,7 +28,6 @@ export default {
         return this.sortFiles(files)
     },
     sortFiles(files) {
-
         for (let i = 0; i < files.length; i++) {
             let weight = 0;
             let match;
@@ -41,18 +40,30 @@ export default {
         return _.sortBy(files, ["weight"])
     },
     async renameFiles(files, names) {
-        assert(files.length <= names.length);
 
-        let i;
-        for (i = 0; i < files.length; i++) {
+        let promises = [];
+        for (let i = 0; i < Math.min(files.length, names.length); i++) {
             const oldPath = files[i].path;
             const basedir = path.dirname(oldPath);
             const extension = path.extname(oldPath);
-            const newPath = path.join(basedir, `${names[i]}.${extension}`);
+            const newPath = path.join(basedir, names[i] + extension);
 
-            fs.rename(oldPath, path.join(basedir, newPath), function (err) {
-                if (err) throw err;
-            })
+            promises.push(
+                new Promise((resolve, reject) => {
+                    fs.rename(oldPath, newPath, function (err) {
+                        if (err === null) {
+                            resolve({
+                                name: path.basename(newPath, extension),
+                                path: newPath
+                            })
+                        } else {
+                            reject(err);
+                        }
+                    })
+                })
+            )
         }
+
+        return await Promise.all(promises)
     }
 }

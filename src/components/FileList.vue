@@ -1,6 +1,12 @@
 <template>
   <v-card class="mx-auto" tile>
-
+    <v-snackbar v-model="showSnackbar" :color="snackbarColor">
+      {{snackbarText}}
+      <v-btn text
+             @click="showSnackbar = false">
+        Close
+      </v-btn>
+    </v-snackbar>
     <v-toolbar flat>
       <v-subheader>Files</v-subheader>
       <v-spacer></v-spacer>
@@ -68,7 +74,11 @@
         name: "FileList",
         data: function () {
             return {
+                renamingInProgress: false,
                 selectionInProgress: false,
+                showSnackbar: false,
+                snackbarText: null,
+                snackbarColor: "success"
             }
         },
         computed: {
@@ -113,8 +123,21 @@
                     .finally(() => this.selectionInProgress = false)
             },
             rename: function () {
+                this.renamingInProgress = true;
                 const names = this.$store.state.episodes.map(it => EpisodeService.formatEpisodeName(it, this.$store.state.nameFormat))
                 FileService.renameFiles(this.$store.state.files, names)
+                    .then(newFiles => {
+                        this.files = newFiles;
+                        this.snackbarText = "Finished renaming";
+                        this.snackbarColor = "success";
+                        this.showSnackbar = true;
+                    })
+                    .catch(it => {
+                        this.snackbarText = "Something wen't wrong during renaming :/";
+                        this.snackbarColor = "error";
+                        this.showSnackbar = true;
+                    })
+                    .finally(() => this.renamingInProgress = false)
             },
             sortHandler: function ({oldIndex, newIndex}) {
                 const moved = this.files.splice(oldIndex, 1)[0];

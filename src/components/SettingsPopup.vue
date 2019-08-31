@@ -71,7 +71,7 @@
             return {
                 selectedFormat: null,
                 formatExamples: [
-                    "{e00} - {series} - {episode} - {E00}{S00}",
+                    "{e00} - {series} - {episode} - {S00}{E00}",
                     "{series} - {S00}{E00} - {episode}",
                     "{series} - {s0}x{e0} - {episode}",
                     "{e000} - {series} - {episode}",
