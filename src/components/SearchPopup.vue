@@ -74,13 +74,13 @@
 
       <v-card-actions>
         <div class="flex-grow-1"></div>
-        <v-btn color="primary" @click="cancelRequest" text outlined>
+        <v-btn color="primary" @click="cancelRequest" text>
           Cancel
         </v-btn>
         <v-btn color="primary" @click="finishRequest"
                :disabled="selectDisabled"
                :loading="loadingEpisodes"
-               text outlined>
+               text>
           Select
         </v-btn>
       </v-card-actions>

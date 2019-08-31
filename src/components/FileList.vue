@@ -46,13 +46,14 @@
 
     <v-card-actions>
       <div class="flex-grow-1"></div>
-      <v-btn @click="files = []" :disabled="files.length === 0" text outlined>
+      <v-btn @click="files = []" :disabled="files.length === 0"
+             text>
         clear
       </v-btn>
       <v-btn :disabled="files.length === 0 || episodes.length === 0"
              @click="rename"
              color="primary"
-             text outlined>
+             text>
         rename
       </v-btn>
     </v-card-actions>

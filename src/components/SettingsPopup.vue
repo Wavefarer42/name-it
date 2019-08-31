@@ -53,7 +53,7 @@
 
       <v-card-actions>
         <div class="flex-grow-1"></div>
-        <v-btn color="primary" @click="$store.commit('setSettings', false)" text outlined>
+        <v-btn color="primary" @click="$store.commit('setSettings', false)" text>
           Close
         </v-btn>
       </v-card-actions>

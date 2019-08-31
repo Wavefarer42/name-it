@@ -51,7 +51,7 @@
       <div class="flex-grow-1"></div>
       <v-btn :disabled="episodes.length === 0"
              @click="clearEpisodes"
-             text outlined>
+             text>
         clear
       </v-btn>
     </v-card-actions>
