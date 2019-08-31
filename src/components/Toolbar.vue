@@ -10,7 +10,7 @@
     <v-btn class="mx-1" icon>
       <v-icon>mdi-heart</v-icon>
     </v-btn>
-    <v-btn class="mx-1" icon>
+    <v-btn class="mx-1" @click="coffee" icon>
       <v-icon>mdi-coffee</v-icon>
     </v-btn>
     <v-btn class="mx-1"
@@ -32,6 +32,15 @@
                 } else {
                     return null
                 }
+            }
+        },
+        methods: {
+            coffee: function () {
+                const open = require("open");
+
+                (async () => {
+                    await open("https://paypal.me/HannesThaller")
+                })()
             }
         }
     }

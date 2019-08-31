@@ -19,7 +19,8 @@
     "vuetify": "^2.0.0",
     "vuex": "^3.0.1",
     "sortablejs": "^1.10.0-rc3",
-    "cors-anywhere": "^0.4.1"
+    "cors-anywhere": "^0.4.1",
+    "open": "^6.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",
