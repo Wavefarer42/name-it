@@ -20,12 +20,12 @@ function replaceNumberPattern(string, number, regex, prefix = "") {
 }
 
 export default {
-    async search(title, season = null) {
-        const series = await TvDbRepository.searchSeries(title);
+    async search(title, season = null, language = "en") {
+        const series = await TvDbRepository.searchSeries(title, language);
 
         let result = null;
         if (series.length > 0) {
-            const seasons = await Promise.all(series.map(it => TvDbRepository.loadSeriesSeasons(it.id)));
+            const seasons = await Promise.all(series.map(it => TvDbRepository.loadSeriesSeasons(it.id, language)));
 
             assert(series.length === seasons.length);
 
@@ -49,9 +49,9 @@ export default {
 
         return result
     },
-    async loadSeasonEpisodes(series) {
+    async loadSeasonEpisodes(series, language = "en") {
 
-        const episodes = await TvDbRepository.loadSeasonEpisodes(series.id, series.season);
+        const episodes = await TvDbRepository.loadSeasonEpisodes(series.id, series.season, language);
 
         return episodes.map(it => {
             return {

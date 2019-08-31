@@ -85,9 +85,10 @@
                     "date": "2011-4-17",
                 },
                 languages: [
-                    {"name": "English", "code": "en"},
-                    {"name": "German", "code": "de"},
-                    {"name": "Japanese", "code": "jp"},
+                    {name: "English", code: "en"},
+                    {name: "German", code: "de"},
+                    {name: "Spanish", code: "es"},
+                    {name: "Japanese", code: "ja"},
                 ]
             }
         },

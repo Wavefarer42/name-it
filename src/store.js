@@ -10,44 +10,11 @@ export default new Vuex.Store({
         selectedSeries: null,
         denseLists: false,
         selectedItem: null,
-        files: [
-            {
-                name: "file name",
-                path: "some/path/file nameasdfffffffffffffffffffffffffffffffffffffasdasdfasssssssssssssssssssssssssssssssss",
-                extension: "ext."
-            },
-            {
-                name: "foo",
-                path: "some/path/foo",
-                extension: "ext."
-            },
-            {
-                name: "bar",
-                path: "some/path/bar",
-                extension: "ext."
-            }
-        ],
+        files: [],
         loadingEpisodes: false,
-        episodes: [
-            {
-                "id": 1,
-                "episodeTitle": "some episode",
-                "episodeNumber": 0,
-                "seasonNumber": 2,
-                "seriesTitle":"name",
-                "date": "2019-2-12",
-            },
-            {
-                "id": 2,
-                "episodeTitle": "other episode",
-                "episodeNumber": 1,
-                "seasonNumber": 2,
-                "seriesTitle":"name",
-                "date": "2019-2-12",
-            }
-        ],
+        episodes: [],
         nameFormat: "{e00} - {series} - {episode} - {S00}{E00}",
-        language: {"name": "English", "code": "en"},
+        language: {name: "English", code: "en"},
         notify: false,
         notificationText: null,
         notificationColor: null

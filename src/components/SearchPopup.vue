@@ -107,6 +107,9 @@
             }
         },
         computed: {
+            language: function () {
+                return this.$store.state.language.code
+            },
             searchRequest: {
                 get: function () {
                     return this.$store.state.searchRequest
@@ -131,7 +134,7 @@
             handleRequest: function () {
                 this.loadingSearch = true;
                 this.seriesSelection = null;
-                EpisodeService.search(this.seriesTitle, this.season)
+                EpisodeService.search(this.seriesTitle, this.season, this.language)
                     .then(it => {
                         if (it === null) {
                             this.searchResults = []
@@ -150,8 +153,7 @@
                     })
             },
             finishRequest: function () {
-                //TODO move into episode list
-                EpisodeService.loadSeasonEpisodes(this.seriesSelection)
+                EpisodeService.loadSeasonEpisodes(this.seriesSelection, this.language)
                     .then(it => {
                         this.$store.commit("setEpisodes", it);
                         if (it.length > 10) {
