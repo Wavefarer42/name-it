@@ -1,12 +1,5 @@
 <template>
   <v-card class="mx-auto" tile>
-    <v-snackbar v-model="showSnackbar" :color="snackbarColor">
-      {{snackbarText}}
-      <v-btn text
-             @click="showSnackbar = false">
-        Close
-      </v-btn>
-    </v-snackbar>
     <v-toolbar flat>
       <v-subheader>Files</v-subheader>
       <v-spacer></v-spacer>
@@ -56,7 +49,7 @@
       <v-btn @click="files = []" :disabled="files.length === 0" text outlined>
         clear
       </v-btn>
-      <v-btn :disabled="files.length === 0 || episodes.leflatngth === 0"
+      <v-btn :disabled="files.length === 0 || episodes.length === 0"
              @click="rename"
              color="primary"
              text outlined>
@@ -76,9 +69,6 @@
             return {
                 renamingInProgress: false,
                 selectionInProgress: false,
-                showSnackbar: false,
-                snackbarText: null,
-                snackbarColor: "success"
             }
         },
         computed: {
@@ -128,14 +118,13 @@
                 FileService.renameFiles(this.$store.state.files, names)
                     .then(newFiles => {
                         this.files = newFiles;
-                        this.snackbarText = "Finished renaming";
-                        this.snackbarColor = "success";
-                        this.showSnackbar = true;
+                        this.$store.dispatch("notifyUser", {msg: "Finished renaming", color: "success"});
                     })
                     .catch(it => {
-                        this.snackbarText = "Something wen't wrong during renaming :/";
-                        this.snackbarColor = "error";
-                        this.showSnackbar = true;
+                        this.$store.dispatch("notifyUser", {
+                            msg: "Something wen't wrong during renaming :/",
+                            color: "error"
+                        });
                     })
                     .finally(() => this.renamingInProgress = false)
             },

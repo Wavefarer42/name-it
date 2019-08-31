@@ -1,5 +1,15 @@
 <template>
   <v-container>
+    <v-snackbar v-model="notify"
+                :color="notificationColor"
+                text>
+      {{notificationText}}
+      <v-btn text
+             @click="notify = false">
+        Close
+      </v-btn>
+    </v-snackbar>
+
     <SeriesSelector></SeriesSelector>
     <SettingsPopup></SettingsPopup>
     <v-row v-if="series">
@@ -31,11 +41,22 @@
         computed: {
             series: function () {
                 return this.$store.state.selectedSeries
+            },
+            notify: {
+                get() {
+                    return this.$store.state.notify
+                },
+                set(value) {
+                    this.$store.commit("setNotify", value)
+                }
+            },
+            notificationColor: function () {
+                return this.$store.state.notificationColor
+            },
+            notificationText: function () {
+                return this.$store.state.notificationText
             }
         },
     }
 </script>
 
-<style scoped>
-
-</style>

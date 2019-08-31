@@ -44,8 +44,10 @@ export default {
                     }
                 }
             }
+            result = _.sortBy(result, ["season"])
         }
-        return _.sortBy(result, ["season"])
+
+        return result
     },
     async loadSeasonEpisodes(series) {
 

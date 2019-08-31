@@ -10,11 +10,47 @@ export default new Vuex.Store({
         selectedSeries: null,
         denseLists: false,
         selectedItem: null,
-        files: [],
+        files: [
+            {
+                name: "file name",
+                path: "some/path/file nameasdfffffffffffffffffffffffffffffffffffffasdasdfasssssssssssssssssssssssssssssssss",
+                extension: "ext."
+            },
+            {
+                name: "foo",
+                path: "some/path/foo",
+                extension: "ext."
+            },
+            {
+                name: "bar",
+                path: "some/path/bar",
+                extension: "ext."
+            }
+        ],
         loadingEpisodes: false,
-        episodes: [],
+        episodes: [
+            {
+                "id": 1,
+                "episodeTitle": "some episode",
+                "episodeNumber": 0,
+                "seasonNumber": 2,
+                "seriesTitle":"name",
+                "date": "2019-2-12",
+            },
+            {
+                "id": 2,
+                "episodeTitle": "other episode",
+                "episodeNumber": 1,
+                "seasonNumber": 2,
+                "seriesTitle":"name",
+                "date": "2019-2-12",
+            }
+        ],
         nameFormat: "{e00} - {series} - {episode} - {S00}{E00}",
-        language:{"name": "English", "code": "en"}
+        language: {"name": "English", "code": "en"},
+        notify: false,
+        notificationText: null,
+        notificationColor: null
     },
     mutations: {
         setSearchRequest(state, val) {
@@ -44,9 +80,24 @@ export default new Vuex.Store({
         setNameFormat(state, val) {
             state.nameFormat = val
         },
-        setLanguage(state, val){
+        setLanguage(state, val) {
             state.language = val
+        },
+        setNotify(state, val) {
+            state.notify = val
+        },
+        setNotificationText(state, val) {
+            state.notificationText = val
+        },
+        setNotificationColor(state, val) {
+            state.notificationColor = val
         }
     },
-    actions: {}
+    actions: {
+        notifyUser({commit}, {msg, color}) {
+            commit("setNotificationText", msg);
+            commit("setNotificationColor", color);
+            commit("setNotify", true);
+        }
+    }
 })

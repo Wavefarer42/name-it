@@ -16,6 +16,7 @@
                             @keyup.enter.native="handleRequest"
                             autofocus
                             required
+                            id="seriesField"
                             ref="seriesField"
                             persistent-hint></v-text-field>
             </v-col>
@@ -38,18 +39,10 @@
               </v-btn>
             </v-col>
           </v-row>
-          <v-snackbar v-model="snackbar"
-                      :color="snackColor"
-                      text>
-            {{snackInfo}}
-            <v-btn color="blue"
-                   text
-                   @click="snackbar = false">
-              Close
-            </v-btn>
-          </v-snackbar>
+
           <v-row>
-            <v-col cols="12">
+            <v-col v-if="searchResults !== null && searchResults.length > 0"
+                   cols="12">
               <v-list>
                 <v-list-item-group v-model="seriesSelection" color="primary">
                   <template v-for="it in paginatedSearchResults">
@@ -69,6 +62,11 @@
               <v-pagination v-if="paginationLength > 1" v-model="page" :length="paginationLength"
                             total-visible="7"></v-pagination>
             </v-col>
+            <v-col v-else
+                   cols="12">
+              <p v-if="searchResults === null" class="grey--text text-center">Search for series...</p>
+              <p v-else class="red--text text-center">No series found</p>
+            </v-col>
           </v-row>
         </v-container>
       </v-form>
@@ -80,7 +78,7 @@
           Cancel
         </v-btn>
         <v-btn color="primary" @click="finishRequest"
-               :disabled="!seriesSelection"
+               :disabled="selectDisabled"
                :loading="loadingEpisodes"
                text outlined>
           Select
@@ -98,14 +96,11 @@
         name: "SearchPopup",
         data: function () {
             return {
-                snackbar: false,
-                snackColor: "primary",
-                snackInfo: null,
                 loadingSearch: false,
                 loadingEpisodes: false,
                 page: 1,
                 pageLimit: 5,
-                searchResults: [],
+                searchResults: null,
                 seriesSelection: null,
                 seriesTitle: null,
                 season: null
@@ -127,6 +122,9 @@
                 const start = (this.page - 1) * this.pageLimit;
                 const end = start + this.pageLimit;
                 return this.searchResults.slice(start, end)
+            },
+            selectDisabled: function () {
+                return this.searchResults === null || this.searchResults.length === 0 || this.seriesSelection === null
             }
         },
         methods: {
@@ -135,17 +133,16 @@
                 EpisodeService.search(this.seriesTitle, this.season)
                     .then(it => {
                         if (it === null) {
-                            this.snackInfo = "No results found.";
-                            this.snackColor = "primary";
-                            this.snackbar = true
+                            this.searchResults = []
                         } else {
                             this.searchResults = it
                         }
                     })
                     .catch(it => {
-                        this.snackInfo = "Something went wrong during loadingSearch :/";
-                        this.snackColor = "red";
-                        this.snackbar = true
+                        this.$store.dispatch("notifyUser", {
+                            msg: "Could not search for series :/",
+                            color: "error"
+                        })
                     })
                     .finally(it => {
                         this.loadingSearch = false
@@ -160,6 +157,12 @@
                             this.$store.commit("setDenseLists", true)
                         }
                     })
+                    .catch(it => {
+                        this.$store.dispatch("notifyUser", {
+                            msg: "Could not load episodes :/",
+                            color: "error"
+                        })
+                    })
                     .finally(it => {
                         this.$store.commit("setLoadingEpisode", false)
                     });
@@ -172,9 +175,9 @@
                 this.$store.commit("setSearchRequest", false)
             }
         },
-        watch:{
-            searchRequest:function(val){
-                if (val){
+        watch: {
+            searchRequest: function (val) {
+                if (val && "seriesField" in this.$refs) {
                     this.$nextTick(this.$refs.seriesField.focus);
                 }
             }
