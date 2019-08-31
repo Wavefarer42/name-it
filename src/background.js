@@ -1,9 +1,9 @@
 'use strict';
-
 import {app, BrowserWindow, protocol} from 'electron'
 import {createProtocol} from 'vue-cli-plugin-electron-builder/lib'
 import Proxy from "./assets/Proxy";
 
+const path = require('path');
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 
@@ -20,7 +20,8 @@ function createWindow() {
     // Create the browser window.
     win = new BrowserWindow({
         width: 800, height: 600, webPreferences: {nodeIntegration: true},
-        autoHideMenuBar: false
+        autoHideMenuBar: false,
+        icon: path.join(__dirname, "/src/assets/icon.ico")
     });
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         // Load the url of the dev server if in development mode
