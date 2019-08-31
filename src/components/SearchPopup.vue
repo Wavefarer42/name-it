@@ -124,12 +124,13 @@
                 return this.searchResults.slice(start, end)
             },
             selectDisabled: function () {
-                return this.searchResults === null || this.searchResults.length === 0 || this.seriesSelection === null
+                return this.searchResults === null || this.searchResults.length === 0 || !this.seriesSelection
             }
         },
         methods: {
             handleRequest: function () {
                 this.loadingSearch = true;
+                this.seriesSelection = null;
                 EpisodeService.search(this.seriesTitle, this.season)
                     .then(it => {
                         if (it === null) {
