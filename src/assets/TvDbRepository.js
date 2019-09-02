@@ -1,7 +1,14 @@
 import axios from "axios";
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
+if (isDevelopment) {
+    axios.defaults.baseURL = "http://0.0.0.0:57412/https://api.thetvdb.com";
+} else {
+    axios.defaults.baseURL = "https://api.thetvdb.com";
+}
+
 const apiKey = "X1FKWAES9KRDW27T";
-axios.defaults.baseURL = "http://localhost:57412/https://api.thetvdb.com";
 let obtainedToken = null;
 
 export default {

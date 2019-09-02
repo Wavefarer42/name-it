@@ -1,5 +1,7 @@
 {
   "name": "name-it",
+  "description": "Name your favorite series.",
+  "author": "Hannes Thaller",
   "version": "0.1.0",
   "private": true,
   "scripts": {

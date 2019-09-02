@@ -3,9 +3,13 @@ import {app, BrowserWindow, protocol} from 'electron'
 import {createProtocol} from 'vue-cli-plugin-electron-builder/lib'
 import Proxy from "./assets/Proxy";
 
-const path = require('path');
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
+if (isDevelopment) {
+    Proxy.start()
+        .then(it => console.log(`Running CORS proxy on ${it.host}:${it.port}`))
+        .catch(e => console.error(`Error during proxy startup: ${e}`));
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -15,13 +19,11 @@ let win;
 protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: {secure: true, standard: true}}]);
 
 function createWindow() {
-    Proxy.start().catch(e => console.error(`Error during proxy startup: ${e}`));
 
     // Create the browser window.
     win = new BrowserWindow({
         width: 800, height: 600, webPreferences: {nodeIntegration: true},
         autoHideMenuBar: false,
-        icon: path.join(__dirname, "/src/assets/icon.ico")
     });
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         // Load the url of the dev server if in development mode
@@ -81,6 +83,7 @@ app.on('ready', async () => {
 
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
+
     if (process.platform === 'win32') {
         process.on('message', data => {
             if (data === 'graceful-exit') {

@@ -1,5 +1,5 @@
 const cors = require("cors-anywhere");
-const host = "localhost";
+const host = "0.0.0.0";
 const port = 57412;
 let isRunning = false;
 
@@ -8,7 +8,7 @@ export default {
         if (!isRunning) {
             await cors.createServer().listen(port, host);
             isRunning = true;
-            console.log(`Running CORS proxy on ${host}:${port}`)
         }
+        return {host: host, port: port}
     }
 }

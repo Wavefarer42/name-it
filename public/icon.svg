@@ -26,7 +26,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="8.1711384"
+     inkscape:cx="-62.90029"
      inkscape:cy="76.915304"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -72,10 +72,14 @@
        x="6.614583"
        y="57.552074"
        ry="2.6458344"
-       rx="2.6458337" />
+       rx="2.6458337"
+       inkscape:export-xdpi="72.279999"
+       inkscape:export-ydpi="72.279999" />
     <g
        id="g825"
-       style="fill:#ba68c8;fill-opacity:0.78431373">
+       style="fill:#ba68c8;fill-opacity:0.78431373"
+       inkscape:export-xdpi="72.279999"
+       inkscape:export-ydpi="72.279999">
       <path
          style="fill:#ba68c8;fill-opacity:0.78431373;stroke:none;stroke-width:0.75099999;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:6.00799992, 6.00799992;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
          d="m 21.166666,72.104164 h 21.166666 v 15.875 l -5.291665,3e-6 z"
@@ -95,11 +99,15 @@
        id="path821"
        cx="42.293037"
        cy="80.029243"
-       r="2.6458333" />
+       r="2.6458333"
+       inkscape:export-xdpi="72.279999"
+       inkscape:export-ydpi="72.279999" />
     <g
        style="fill:#64b5f6;fill-opacity:0.78431373"
        id="g885"
-       transform="rotate(-90,29.104165,80.041663)">
+       transform="rotate(-90,29.104165,80.041663)"
+       inkscape:export-xdpi="72.279999"
+       inkscape:export-ydpi="72.279999">
       <path
          sodipodi:nodetypes="ccccc"
          inkscape:connector-curvature="0"
@@ -120,11 +128,15 @@
        cx="-66.852791"
        id="circle887"
        style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.75099999;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:6.00799992, 6.00799992;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
-       transform="rotate(-90)" />
+       transform="rotate(-90)"
+       inkscape:export-xdpi="72.279999"
+       inkscape:export-ydpi="72.279999" />
     <g
        transform="rotate(-180,29.104165,80.041663)"
        id="g903"
-       style="fill:#4db6ac;fill-opacity:0.78431373">
+       style="fill:#4db6ac;fill-opacity:0.78431373"
+       inkscape:export-xdpi="72.279999"
+       inkscape:export-ydpi="72.279999">
       <path
          style="fill:#4db6ac;fill-opacity:0.78431373;stroke:none;stroke-width:0.75099999;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:6.00799992, 6.00799992;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
          d="m 21.166666,72.104164 h 21.166666 v 15.875 l -5.291665,3e-6 z"
@@ -145,11 +157,15 @@
        id="circle905"
        cx="-15.915296"
        cy="-80.054085"
-       r="2.6458333" />
+       r="2.6458333"
+       inkscape:export-xdpi="72.279999"
+       inkscape:export-ydpi="72.279999" />
     <g
        style="fill:#ffb74d;fill-opacity:0.78431373"
        id="g911"
-       transform="rotate(90,29.10417,80.041663)">
+       transform="rotate(90,29.10417,80.041663)"
+       inkscape:export-xdpi="72.279999"
+       inkscape:export-ydpi="72.279999">
       <path
          sodipodi:nodetypes="ccccc"
          inkscape:connector-curvature="0"
@@ -170,6 +186,8 @@
        cx="93.23053"
        id="circle913"
        style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.75099999;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:6.00799992, 6.00799992;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
-       transform="rotate(90)" />
+       transform="rotate(90)"
+       inkscape:export-xdpi="72.279999"
+       inkscape:export-ydpi="72.279999" />
   </g>
 </svg>
