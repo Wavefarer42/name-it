@@ -2,6 +2,7 @@
 import {app, BrowserWindow, protocol} from 'electron'
 import {createProtocol} from 'vue-cli-plugin-electron-builder/lib'
 import Proxy from "./assets/Proxy";
+import path from 'path'
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -22,8 +23,10 @@ function createWindow() {
 
     // Create the browser window.
     win = new BrowserWindow({
-        width: 800, height: 600, webPreferences: {nodeIntegration: true},
-        autoHideMenuBar: false,
+        width: 1000, height: 600,
+        webPreferences: {nodeIntegration: true},
+        autoHideMenuBar: true,
+        icon: path.join(__static, "icon.png")
     });
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         // Load the url of the dev server if in development mode
@@ -32,7 +35,7 @@ function createWindow() {
     } else {
         createProtocol('app');
         // Load the index.html when not in development
-        win.loadURL('app://./index.html')
+        win.loadURL(`file://${__dirname}/index.html`)
     }
 
     win.on('closed', () => {
@@ -71,11 +74,11 @@ app.on('ready', async () => {
         // Electron will not launch with Devtools extensions installed on Windows 10 with dark mode
         // If you are not using Windows 10 dark mode, you may uncomment these lines
         // In addition, if the linked issue is closed, you can upgrade electron and uncomment these lines
-        // try {
-        //   await installVueDevtools()
-        // } catch (e) {
-        //   console.error('Vue Devtools failed to install:', e.toString())
-        // }
+        try {
+            await installVueDevtools()
+        } catch (e) {
+            console.error('Vue Devtools failed to install:', e.toString())
+        }
 
     }
     createWindow()

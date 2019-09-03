@@ -2,6 +2,7 @@
   "name": "name-it",
   "description": "Name your favorite series.",
   "author": "Hannes Thaller",
+  "email": "hannes.thaller.at@gmail.com",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +10,7 @@
     "build": "vue-cli-service build",
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
+    "electron:generate-icons": "electron-icon-builder --input=./public/icon.png --output=build --flatten",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps"
   },
@@ -36,6 +38,7 @@
     "vue-cli-plugin-electron-builder": "^1.4.0",
     "vue-cli-plugin-vuetify": "^0.6.3",
     "vue-template-compiler": "^2.6.10",
-    "vuetify-loader": "^1.2.2"
+    "vuetify-loader": "^1.2.2",
+    "electron-icon-builder": "^1.0.1"
   }
 }
