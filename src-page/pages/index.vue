@@ -82,7 +82,6 @@
 
 <script>
     import Downloader from "../components/Downloader";
-
     export default {
         components: {Downloader},
         data: function () {
