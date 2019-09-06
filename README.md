@@ -41,6 +41,18 @@ I will fix bugs and add requested features but only if I deem useful and have ti
 
 Just submit an issue or feel free to fork and adapt the project as needed.
 
+## Package & Publish
+To packaging and publishing is currently done manual via a docker container and release-it script:
+```
+docker run --rm -ti  --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS_TAG|TRAVIS|TRAVIS_REPO_|TRAVIS_BUILD_|TRAVIS_BRANCH|TRAVIS_PULL_REQUEST_|APPVEYOR_|CSC_|GH_|GITHUB_|BT_|AWS_|STRIP|BUILD_')  --env ELECTRON_CACHE="/root/.cache/electron"  --env ELECTRON_BUILDER_CACHE="/root/.cache/electron-builder"  -v ${PWD}:/project  -v ${PWD##*/}-node-modules:/project/node_modules  -v ~/.cache/electron:/root/.cache/electron  -v ~/.cache/electron-builder:/root/.cache/electron-builder  electronuserland/builder:wine
+```
+In the container install the dependencies and start the packing:
+```
+yarn
+yarn electron:build
+```
+
+
 ## Authors
 * Hannes Thaller
 

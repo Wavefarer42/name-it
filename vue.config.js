@@ -4,38 +4,21 @@ module.exports = {
             builderOptions: {
                 "productName": "name-it",
                 "appId": "com.sourceflow.name-it",
-                "copyright":"Copyright @ 2019 ${author}",
+                "copyright": "Copyright @ 2019 ${author}",
                 "directories": {
                     "output": "build"
                 },
-                "dmg": {
-                    "contents": [
-                        {
-                            "x": 410,
-                            "y": 150,
-                            "type": "link",
-                            "path": "/Applications"
-                        },
-                        {
-                            "x": 130,
-                            "y": 150,
-                            "type": "file"
-                        }
-                    ]
-                },
-                "mac": {
-                    "icon": "build/icons/512x512.icns"
-                },
                 "win": {
-                    "target":["nsis", "msi"],
-                    "icon": "build/icons/512x512.ico"
+                    "target": ["nsis"],
+                    "icon": "build/icons/512x512.ico",
+                    "artifactName": "${productName}-${version}.${ext}"
                 },
                 "linux": {
-                    "maintainer":"Hannes Thaller",
-                    "target": ["AppImage", "deb"],
+                    "maintainer": "Hannes Thaller",
+                    "target": ["AppImage"],
                     "icon": "build/icons",
                     "category": "Utility"
-                }
+                },
             },
         }
     }

@@ -1,5 +1,5 @@
 git:
-  commitMessage: "chore: release %s"
+  commitMessage: "Release %s"
   tagName: "v${version}"
   requireCleanWorkingDir: false
   requireUpstream: false
@@ -8,9 +8,7 @@ npm:
 github:
   release: true
   releaseName: "${version}"
-  preRelease: true
   draft: true
-  tokenRef: "GITHUB_SECRET"
   assets:
     - build/*.AppImage
     - build/*.deb
