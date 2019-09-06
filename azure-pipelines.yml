@@ -1,0 +1,25 @@
+trigger:
+  - master
+
+strategy:
+  matrix:
+    linux:
+      imageName: "ubuntu-16.04"
+  maxParallel: 3
+
+pool:
+  vmImage: $(imageName)
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: 10.x
+  - script: |
+      git config --global user.email "hannes.thaller.at@gmail.com"
+      git config --global user.name "Hannes Thaller"
+      npm install
+      npm run electron:build
+      npm run release
+    env:
+      GITHUB_SECRET: $(GITHUB_TOKEN)
+

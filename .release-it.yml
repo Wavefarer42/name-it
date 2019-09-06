@@ -1,0 +1,19 @@
+git:
+  commitMessage: "chore: release %s"
+  tagName: "v${version}"
+  requireCleanWorkingDir: false
+  requireUpstream: false
+npm:
+  publish: false
+github:
+  release: true
+  releaseName: "${version}"
+  preRelease: true
+  draft: true
+  tokenRef: "GITHUB_SECRET"
+  assets:
+    - build/*.AppImage
+    - build/*.deb
+    - build/*.rpm
+    - build/*.exe
+    - build/*.dmg

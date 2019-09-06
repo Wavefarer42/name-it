@@ -13,7 +13,8 @@
     "electron:serve": "vue-cli-service electron:serve",
     "electron:generate-icons": "electron-icon-builder --input=./public/icon.png --output=build --flatten",
     "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "postuninstall": "electron-builder install-app-deps",
+    "release": "release-it --ci"
   },
   "main": "background.js",
   "dependencies": {
@@ -40,6 +41,7 @@
     "vue-template-compiler": "^2.6.10",
     "vuetify-loader": "^1.2.2",
     "electron-icon-builder": "^1.0.1",
-    "cors-anywhere": "^0.4.1"
+    "cors-anywhere": "^0.4.1",
+    "release-it": "^12.3.6"
   }
 }
