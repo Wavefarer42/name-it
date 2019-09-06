@@ -4,7 +4,7 @@ node_js:
 matrix:
   include:
     - os: linux
-      dist: xenial
+      dist: bionic
       sudo: required
 #    - os: osx
 #    - os: windows
@@ -14,3 +14,13 @@ notifications:
   email: false
 script:
   - npm run electron:build
+deploy:
+  provider: releases
+  api_key: $GITHUB_OAUTH_TOKEN
+  file_glob: true
+  file:
+    - "build/name-it*.AppImage"
+    - "build/name-it*.deb"
+  skip_cleanup: true
+  on:
+    tags: true

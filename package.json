@@ -3,6 +3,7 @@
   "description": "Name your favorite series.",
   "author": "Hannes Thaller",
   "email": "hannes.thaller.at@gmail.com",
+  "homepage": "https://tallic.github.io/name-it/",
   "version": "0.1.0",
   "private": true,
   "scripts": {
