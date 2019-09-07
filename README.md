@@ -1,4 +1,4 @@
-# **NAME**iT
+# **NAME**IT
 
 **NAME**IT is a free, open-source, file naming app. It allows you to fetch series data from TVDB and name files
 
