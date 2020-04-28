@@ -64,7 +64,15 @@ export default {
             }
         }).sort((a, b) => a.episodeNumber - b.episodeNumber)
     },
-    formatEpisodeName(episode, format) {
+    normalizeFileNames(name, blacklist) {
+        if(blacklist === null || blacklist.length === 0 || name === null || name.length === 0 ){
+            return name
+        }
+
+        const blacklistSet = new Set(blacklist)
+        return Array.from(name).map(c => blacklistSet.has(c) ? '' : c).join('')
+    },
+    formatEpisodeName(episode, format, blacklist) {
         let name = format.replace("{series}", episode.seriesTitle)
             .replace("{episode}", episode.episodeTitle);
 
@@ -73,6 +81,6 @@ export default {
         name = replaceNumberPattern(name, episode.seasonNumber, seasonNumberRegex);
         name = replaceNumberPattern(name, episode.seasonNumber, seasonNumberRegexPrefix, "S");
 
-        return name
+        return this.normalizeFileNames(name, blacklist)
     }
 }

@@ -39,6 +39,7 @@ export default {
 
         return _.sortBy(files, ["weight"])
     },
+
     async renameFiles(files, names) {
 
         let promises = [];

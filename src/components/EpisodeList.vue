@@ -1,61 +1,61 @@
 <template>
-  <v-card class="mx-auto scroll" tile>
+    <v-card class="mx-auto scroll" tile>
 
-    <v-toolbar flat>
-      <v-subheader>Episodes</v-subheader>
-      <v-spacer></v-spacer>
-      <v-btn :color="previewColor"
-             @click="preview = !preview"
-             class="mx-1" icon>
-        <v-icon>mdi-set-center-right</v-icon>
-      </v-btn>
-      <v-btn class="mx-1" @click="$store.commit('setSearchRequest', true)"
-             :loading="$store.state.loadingEpisodes"
-             icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-      <v-chip class="mx-1" :color="chipColor" outlined>{{episodes.length}}</v-chip>
-    </v-toolbar>
+        <v-toolbar flat>
+            <v-subheader>Episodes</v-subheader>
+            <v-spacer></v-spacer>
+            <v-btn :color="previewColor"
+                   @click="preview = !preview"
+                   class="mx-1" icon>
+                <v-icon>mdi-set-center-right</v-icon>
+            </v-btn>
+            <v-btn class="mx-1" @click="$store.commit('setSearchRequest', true)"
+                   :loading="$store.state.loadingEpisodes"
+                   icon>
+                <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+            <v-chip class="mx-1" :color="chipColor" outlined>{{episodes.length}}</v-chip>
+        </v-toolbar>
 
-    <v-divider></v-divider>
+        <v-divider></v-divider>
 
-    <v-list shaped :dense="$store.state.denseLists">
-      <v-list-item v-for="(it, i) in episodes"
-                   :key="it.id"
-                   class="pr-0 my-1">
+        <v-list shaped :dense="$store.state.denseLists">
+            <v-list-item v-for="(it, i) in episodes"
+                         :key="it.id"
+                         class="pr-0 my-1">
 
-        <v-list-item-action class="mr-2 my-0">
-          <v-btn icon @click="removeElement(it.id)">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-list-item-action>
+                <v-list-item-action class="mr-2 my-0">
+                    <v-btn icon @click="removeElement(it.id)">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                </v-list-item-action>
 
-        <v-divider vertical></v-divider>
+                <v-divider vertical></v-divider>
 
-        <v-list-item-group v-model="selectedItem" color="primary" style="width: 100%">
-          <v-list-item :value="i">
-            <template v-slot:default="{active}">
-              <v-list-item-content>
-                <span v-if="preview">{{formatEpisodeName(it)}}</span>
-                <span v-else>{{it.episodeNumber}}. {{it.episodeTitle}}</span>
-                <span class="grey--text caption" v-if="active">aired on {{it.date}}</span>
-              </v-list-item-content>
-            </template>
-          </v-list-item>
-        </v-list-item-group>
+                <v-list-item-group v-model="selectedItem" color="primary" style="width: 100%">
+                    <v-list-item :value="i">
+                        <template v-slot:default="{active}">
+                            <v-list-item-content>
+                                <span v-if="preview">{{formatEpisodeName(it)}}</span>
+                                <span v-else>{{it.episodeNumber}}. {{it.episodeTitle}}</span>
+                                <span class="grey--text caption" v-if="active">aired on {{it.date}}</span>
+                            </v-list-item-content>
+                        </template>
+                    </v-list-item>
+                </v-list-item-group>
 
-      </v-list-item>
-    </v-list>
+            </v-list-item>
+        </v-list>
 
-    <v-card-actions>
-      <div class="flex-grow-1"></div>
-      <v-btn :disabled="episodes.length === 0"
-             @click="clearEpisodes"
-             text>
-        clear
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+        <v-card-actions>
+            <div class="flex-grow-1"></div>
+            <v-btn :disabled="episodes.length === 0"
+                   @click="clearEpisodes"
+                   text>
+                clear
+            </v-btn>
+        </v-card-actions>
+    </v-card>
 </template>
 
 <script>
@@ -114,7 +114,7 @@
                 this.episodes = this.episodes.filter(it => it.id !== id)
             },
             formatEpisodeName: function (episode) {
-                return EpisodeService.formatEpisodeName(episode, this.$store.state.nameFormat)
+                return EpisodeService.formatEpisodeName(episode, this.$store.state.nameFormat, this.$store.state.blacklist)
             }
         }
     }

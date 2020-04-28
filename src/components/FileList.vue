@@ -115,7 +115,7 @@
             },
             rename: function () {
                 this.renamingInProgress = true;
-                const names = this.$store.state.episodes.map(it => EpisodeService.formatEpisodeName(it, this.$store.state.nameFormat))
+                const names = this.$store.state.episodes.map(it => EpisodeService.formatEpisodeName(it, this.$store.state.nameFormat, this.$store.state.blacklist))
                 FileService.renameFiles(this.$store.state.files, names)
                     .then(newFiles => {
                         this.files = newFiles;

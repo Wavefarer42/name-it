@@ -33,7 +33,7 @@
            @click="$store.commit('setSettings', true)"
            :color="settings"
            icon>
-      <v-icon>mdi-settings</v-icon>
+      <v-icon>mdi-cog</v-icon>
     </v-btn>
   </v-app-bar>
 </template>

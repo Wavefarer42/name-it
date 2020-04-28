@@ -17,7 +17,8 @@ export default new Vuex.Store({
         language: {name: "English", code: "en"},
         notify: false,
         notificationText: null,
-        notificationColor: null
+        notificationColor: null,
+        blacklist: ['&', '$', '@', ':', ';', '?', ',', '%', '\\', '/', '<', '>']
     },
     mutations: {
         setSearchRequest(state, val) {
